@@ -1,4 +1,4 @@
-import type { Todo } from "../Types/global";
+import type { Todo } from "../types/global";
 
 // export const addNewTodo = async (data: newTodo): Promise<Todo> => {
 //   const res = await fetch("https://dummyjson.com/todos/add", {
@@ -25,11 +25,11 @@ export const addNewTodo = async (data: Todo): Promise<Todo> => {
       dueDate: data.dueDate,
       completed: data.completed,
       priority: data.priority,
-      id: Math.random(),
+      id: data.id,
     }),
   });
 
   if (!res.ok) console.log("error in addNewTodo");
   const json = await res.json();
-  return json as Todo;
+  return json.todo as Todo;
 };
