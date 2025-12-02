@@ -4,10 +4,9 @@ import {
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@/components/ui/Atom/item"
+} from "@/components/ui/Atom/item";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { Input } from "../Atom/input";
 
 interface TodosList {
   title: string;
@@ -52,7 +51,6 @@ export function ItemDemo({
           {endContent1}
           {endContent2}
           {listAction}
-
         </ItemActions>
       </Item>
     </div>

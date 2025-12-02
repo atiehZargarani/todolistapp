@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -15,7 +14,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-#root{
+#root {
   width: 100%;
 }
 
@@ -42,27 +41,24 @@ h1 {
 }
 
 .checkbox {
-  
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  accent-color: rebeccapurple;       
+  accent-color: rebeccapurple;
   cursor: pointer;
-
 }
 
 .checkbox:checked {
   background: rebeccapurple;
   border-color: rebeccapurple;
-  color: white; 
+  color: white;
 }
 
 .checkbox:focus {
   outline: none;
   box-shadow: none;
-
 }
-.basic-btn{
+.basic-btn {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -73,13 +69,12 @@ h1 {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-.btn-success{
+.btn-success {
   background-color: #b9f8cf;
 }
 
-.btn-error{
+.btn-error {
   background-color: #ffc9c9;
-
 }
 
 button:focus,

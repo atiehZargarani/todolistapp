@@ -8,7 +8,7 @@ export type Todo = {
 };
 
 export const getAllTodo = async (): Promise<Todo[]> => {
-  const res = await fetch("https://fakeapi.in/api/todos");
+  const res = await fetch(import.meta.env.BASE_URL);
   if (!res.ok) console.log("error in getAllTodo");
   const json = await res.json();
   return json.todos;

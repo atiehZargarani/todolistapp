@@ -1,36 +1,44 @@
 import { useState } from "react";
-import type { Todo } from "../lib/types/global";
+
 // import { addNewTodo } from "@/lib/api/addNewTodo";
 
 import { useForm } from "react-hook-form";
 import { addNewTodo } from "@/lib/api/addNewTodo";
-import { todoSchema,  type TodoFormInput } from "../lib/schema/todoSchema";
+import { todoSchema, type TodoFormInput } from "../lib/schema/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { todosAtom } from "@/lib/storage/atom";
 export const useGlobal = () => {
   const [todos, setTodos] = useAtom(todosAtom);
-  // const [allTodos, setTodos] = useState<Todo[]>([
-  //   {
-  //     id: 1,
-  //     task: "test",
-  //     assignedTo: "test",
-  //     dueDate: "2025-01-01",
-  //     completed: false,
-  //     priority: "High",
-  //   },
-  //   {
-  //     id: 2,
-  //     task: "test2",
-  //     assignedTo: "test2",
-  //     dueDate: "2025-01-02",
-  //     completed: false,
-  //     priority: "Medium",
-  //   },
-  // ]);
-  const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const { register,setValue,getValues ,handleSubmit ,watch,formState: { errors, },} = useForm<TodoFormInput>({
+  const [checked, setChecked] = useState(false);
+  const overViewCardData = [
+    { type: "basic", title: "All Tasks", value: todos.length },
+    {
+      type: "error",
+      title: "Important tasks",
+      value: todos.filter((todo) => todo.priority === "High").length,
+    },
+    {
+      type: "success",
+      title: "Not important Tasks",
+      value: todos.filter((todo) => todo.priority === "Low").length,
+    },
+    {
+      type: "warning",
+      title: "Medium Tasks",
+      value: todos.filter((todo) => todo.priority === "Medium").length,
+    },
+  ];
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       completed: false,
@@ -40,22 +48,43 @@ export const useGlobal = () => {
   });
 
   const onSubmit = async (data: TodoFormInput) => {
-    console.log(data);
-
+    setLoading(true);
     try {
       const newTodo = await addNewTodo({
         id: Math.random(),
-        ...data,
+        dueDate: data.dueDate,
+        assignedTo: data.assignedTo,
+        priority: data.priority ?? "Low",
+
+        task: data.task,
+        completed: false,
       });
-      console.log("newTodo", newTodo);
-      
+      setLoading(false);
+
       setTodos((prev) => [newTodo, ...prev]);
     } catch (err: unknown) {
+      setLoading(false);
+
       console.log("error in onSubmit", err);
     }
   };
-  const deleteTask=(id:number)=>{
+  const deleteTask = (id: number) => {
     setTodos((prev) => prev.filter((task) => task.id !== id));
-  }
-  return { todos, setTodos, register, handleSubmit, onSubmit ,errors,deleteTask,checked,setChecked,setValue,getValues,watch};
+  };
+  return {
+    todos,
+    setTodos,
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    deleteTask,
+    checked,
+    setChecked,
+    setValue,
+    getValues,
+    watch,
+    overViewCardData,
+    loading,
+  };
 };

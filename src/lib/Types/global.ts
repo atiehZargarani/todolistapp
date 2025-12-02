@@ -4,5 +4,5 @@ export type Todo = {
   assignedTo: string;
   dueDate?: string;
   completed?: boolean;
-  priority?: string;
+  priority: string;
 };

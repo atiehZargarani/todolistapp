@@ -8,5 +8,4 @@ export const todoSchema = z.object({
   dueDate: z.string().default(() => new Date().toISOString()),
 });
 
-// export type TodoForm = z.infer<typeof todoSchema>;
-export type TodoFormInput = z.input<typeof todoSchema>; 
+export type TodoFormInput = z.input<typeof todoSchema>;
