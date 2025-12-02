@@ -4,16 +4,17 @@ import {
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@/components/ui/item"
+} from "@/components/ui/Atom/item"
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { Input } from "../Atom/input";
 
 interface TodosList {
   title: string;
   subtitle: string;
   endContent1: ReactNode;
   endContent2: ReactNode;
-  cardAction: ReactNode;
+  listAction: ReactNode;
 }
 
 export function ItemDemo({
@@ -21,7 +22,7 @@ export function ItemDemo({
   subtitle,
   endContent1,
   endContent2,
-  cardAction,
+  listAction,
 }: TodosList) {
   const [checked, setChecked] = useState(false);
 
@@ -31,12 +32,13 @@ export function ItemDemo({
         variant="outline"
         className={cn(
           checked
-            ? "bg-green-100 border-green-400"
-            : "bg-white border-gray-300"
+            ? "bg-green-100 border-green-200"
+            : "bg-gray-50 border-gray-100"
         )}
       >
         <input
           type="checkbox"
+          className="checkbox"
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
         />
@@ -47,9 +49,10 @@ export function ItemDemo({
         </ItemContent>
 
         <ItemActions>
-          {cardAction}
           {endContent1}
           {endContent2}
+          {listAction}
+
         </ItemActions>
       </Item>
     </div>

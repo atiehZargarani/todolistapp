@@ -2,17 +2,17 @@ import { useEffect } from "react";
 import "./App.css";
 
 import { useGlobal } from "@/hooks/global";
-import { ItemDemo } from "./components/ui/ItemDemo";
+import { ItemDemo } from "@/components/ui/Molecule/List";
 import Card from "./components/ui/Atom/Card";
 import Badage from "./components/ui/Atom/Badage";
 import { getAllTodo } from "./lib/api/getAllTodos";
-// import { getAllTodo } from "./lib/api/baseApi";
-// todo alias
+import { Input } from "./components/ui/Atom/input";
+
 
 function App() {
-  const { todos, setTodos, onSubmit, register, handleSubmit, errors, deleteTask, setValue } =
+  const { todos, setTodos, onSubmit, register, handleSubmit, errors, deleteTask, setValue, watch } =
     useGlobal();
-    
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,66 +27,67 @@ function App() {
   }, []);
 
   return (
-    <main>
-      <section className="flex justify-center items-center gap-4 flex-wrap">
+    <main className="">
+      <section className="flex justify-center items-center gap-4 flex-wrap py-5 px-3 md:px-0">
         <Card
           data={[
-            { title: "All Tasks", value: todos.length },
-            { title: "All Tasks", value: todos.length },
-            { title: "All Tasks", value: todos.length },
-            { title: "All Tasks", value: todos.length },
+            { type: "basic", title: "All Tasks", value: todos.length },
+            { type: "error", title: "Important tasks", value: todos.filter((todo) => todo.priority === 'High').length },
+            { type: "success", title: "Not important Tasks", value: todos.filter((todo) => todo.priority === 'Low').length },
+            { type: "warning", title: "Medium Tasks", value: todos.filter((todo) => todo.priority === 'Medium').length },
           ]}
         />
 
       </section>
 
-      <section className=" rounded-lg overflow-hidden shadow-sm flex flex-col">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label>title</label>
-          <input className="border" {...register("task")} />
-          {errors.task && (
-            <p className="text-red-500 text-sm">{errors.task.message}</p>
-          )}
-          <label>user name</label>
-          <input className="border" {...register("assignedTo")} />
-          {errors.assignedTo && (
-            <p className="text-red-500 text-sm">{errors.assignedTo.message}</p>
-          )}
-          <label>due date</label>
-          <input className="border" {...register("dueDate")} />
-     
-        <Badage title="Medium" type="Medium" action={()=>{setValue("priority","Medium")}} />
+      <section className="md:flex mx-auto justify-center gap-10">
 
-          <span>status</span>
+        <form onSubmit={handleSubmit(onSubmit)} className=" items-center md:items-end md:w-1/2 gap-3 pt-3 flex flex-col px-10">
+ 
+         
+          <Input placeholder="title" className="w-full md:w-1/2 py-6" {...register("task")} />
 
-          <select id="" {...register("completed", {
-            setValueAs: (value: string) => value === "1" || value === "true"
-          })}>
-            <option value="true">done</option>
-            <option value="false">failed</option>
-          </select>
+          <p className="text-red-500 text-sm pb-2 w-full md:w-1/2  text-start">{errors?.task?.message}</p>
 
-          <button type="submit">add todos</button>
+
+          <Input placeholder="user who wants do task" className="w-full md:w-1/2 py-6" {...register("assignedTo")} />
+
+          <p className="text-red-500 text-sm pb-2 w-full md:w-1/2 text-start">{errors?.assignedTo?.message}</p>
+
+
+
+          <div className="flex justify-between w-full md:w-1/2">
+            <span>Piority :<strong className="mx-2">{watch("priority")}</strong></span>
+            <div className="flex gap-2">
+              <Badage extraClassName="cursor-pointer" title="Medium" type="Medium" action={() => { setValue("priority", "Medium") }} />
+              <Badage extraClassName="cursor-pointer" title="Low" type="Low" action={() => { setValue("priority", "Low") }} />
+              <Badage extraClassName="cursor-pointer" title="High" type="High" action={() => { setValue("priority", "High") }} />
+            </div>
+          </div>
+
+
+          <button type="submit" className="w-full md:w-1/2 basic-btn btn-success my-4">add todos</button>
         </form>
-      </section>
-      <section className="my-2">
-        {todos.map((todo) => (
-          <div key={todo.id} className="flex justify-center pb-3">
 
-            <ItemDemo title={todo.task} subtitle={todo.assignedTo} endContent1={<span>{todo.completed}</span>
-            }
+        <section className="my-2 md:w-1/2">
+          {todos.map((todo) => (
+            <div key={todo.id} className="flex justify-center md:justify-start pb-3">
 
-              cardAction={<button onClick={() => deleteTask(todo.id)}>delete</button>}
-              endContent2={<Badage title={todo.priority ?? "Low"} type={todo.priority ?? "Low"} />
-
-
-
+              <ItemDemo title={todo.task} subtitle={todo.assignedTo} endContent1={<span>{todo.completed}</span>
               }
 
-            />
+                listAction={<button className="!px-2 !py-1 basic-btn btn-error" onClick={() => deleteTask(todo.id)}>delete</button>}
+                endContent2={<Badage title={todo.priority ?? "Low"} type={todo.priority ?? "Low"} />
 
-          </div>
-        ))}
+
+
+                }
+
+              />
+
+            </div>
+          ))}
+        </section>
       </section>
 
     </main>

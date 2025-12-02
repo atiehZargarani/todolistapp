@@ -4,7 +4,7 @@ export const todoSchema = z.object({
   task: z.string().min(1, "Please enter a title for your task"),
   assignedTo: z.string().min(1, "Please enter a name for the user"),
   completed: z.boolean().default(false),
-  priority: z.string().default("low"),
+  priority: z.string().default("Low"),
   dueDate: z.string().default(() => new Date().toISOString()),
 });
 

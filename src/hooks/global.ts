@@ -17,7 +17,7 @@ export const useGlobal = () => {
   //     assignedTo: "test",
   //     dueDate: "2025-01-01",
   //     completed: false,
-  //     priority: "high",
+  //     priority: "High",
   //   },
   //   {
   //     id: 2,
@@ -25,16 +25,16 @@ export const useGlobal = () => {
   //     assignedTo: "test2",
   //     dueDate: "2025-01-02",
   //     completed: false,
-  //     priority: "medium",
+  //     priority: "Medium",
   //   },
   // ]);
   const [checked, setChecked] = useState(false);
 
-  const { register,setValue ,handleSubmit ,formState: { errors, },} = useForm<TodoFormInput>({
+  const { register,setValue,getValues ,handleSubmit ,watch,formState: { errors, },} = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       completed: false,
-      priority: "low",
+      priority: "Low",
       dueDate: new Date().toISOString(),
     },
   });
@@ -57,5 +57,5 @@ export const useGlobal = () => {
   const deleteTask=(id:number)=>{
     setTodos((prev) => prev.filter((task) => task.id !== id));
   }
-  return { todos, setTodos, register, handleSubmit, onSubmit ,errors,deleteTask,checked,setChecked,setValue};
+  return { todos, setTodos, register, handleSubmit, onSubmit ,errors,deleteTask,checked,setChecked,setValue,getValues,watch};
 };
